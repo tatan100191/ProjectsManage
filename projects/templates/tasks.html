@@ -1,0 +1,74 @@
+{% extends "base.html" %}		
+			
+	{% block nav %}
+          <li class="active span4"><a href="{%url 'projects:projectsInProgress'%}" class="brand">Projects in progress</a></li>
+          <li class="span4"><a href="{%url 'projects:projectsCompleted'%}" class="brand">Projects completed</a></li>
+	{% endblock %}	
+
+	{% block content %}
+	
+	<div class="row-fluid span12">
+		<h2>{{project.name}}</h2>
+		<table class="table table-bordered table-striped table-hover span6">
+			<tr>
+				<th class="span3">Name</th>
+				<th class="span3">Start Date</th>
+				<th class="span3">End Date</th>
+				<th class="span3">Minutes</th>
+			</tr>
+		{% for task in tasks %}
+			<tr >
+				<td class="span3">{{task.name}}</td>
+				<td class="span3">{{task.start_date}}</td>
+				<td class="span3">{{task.end_date}}</td>
+				<td class="span3">{{task.hours_worked}}</td>	
+			</tr>
+		{% endfor %}
+		</table>
+		</br>
+		</br>
+		{% for task in tasks %}
+			{% if not task.end_date %}
+				<div class="btn-group span3">
+					<form action="{%url 'projects:start' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn">start</button>
+					</form>
+					<form action="{%url 'projects:pause' project.id task.id  %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn">pause</button>	
+					</form>	
+				</div>
+				<form action="{%url 'projects:taskCompleted' project.id task.id %}" class="" method="post">
+				{% csrf_token %}
+				<button type="submit" class="btn span2">completed</button>
+				</form>
+			{% else %}
+				<div class="btn-group span3">
+					<form action="{%url 'projects:start' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn" disabled="disabled">start</button>
+					</form>
+					<form action="{%url 'projects:pause' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn" disabled="disabled">pause</button>	
+					</form>	
+				</div>
+				<form action="{%url 'projects:taskCompleted' project.id task.id%}" class="" method="post">
+				{% csrf_token %}
+				<button type="submit" class="btn span2" disabled="disabled">completed</button>
+				</form>
+			{% endif %}
+		{% endfor %}	
+	</div>
+
+	<form action="{%url 'projects:addTask' project.id %}" class="span6" method="post">
+	{% csrf_token %}
+		<legend>Add Task</legend>
+		<div class="input-append">
+			<label for="add">Name</label><input id="add"  type="text" name="addtask" required="required">
+			<input type="submit" class="btn" value="Add">  
+		</div>	
+	</form>
+	<h1>{{prueba.name}}</h1>
+	{% endblock %}

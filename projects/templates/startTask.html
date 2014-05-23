@@ -1,0 +1,33 @@
+		{% for task in tasks %}
+			{% if not task.end_date %}
+				<div class="btn-group span3">
+					<form action="{%url 'projects:start' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn">start</button>
+					</form>
+					<form action="{%url 'projects:pause' project.id task.id counter.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn">pause</button>	
+					</form>	
+				</div>
+				<form action="{%url 'projects:taskCompleted' project.id task.id %}" class="" method="post">
+				{% csrf_token %}
+				<button type="submit" class="btn span2">completed</button>
+				</form>
+			{% else %}
+				<div class="btn-group span3">
+					<form action="{%url 'projects:start' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn" disabled="disabled">start</button>
+					</form>
+					<form action="{%url 'projects:pause' project.id task.id %}" class="span3" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn" disabled="disabled">pause</button>	
+					</form>	
+				</div>
+				<form action="{%url 'projects:taskCompleted' project.id task.id%}" class="" method="post">
+				{% csrf_token %}
+				<button type="submit" class="btn span2" disabled="disabled">completed</button>
+				</form>
+			{% endif %}
+		{% endfor %}	

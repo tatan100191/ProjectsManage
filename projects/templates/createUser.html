@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="post" action="{% url 'createUser' %}">
+{% csrf_token %}
+	
+	<legend>Create User</legend>
+
+		<p>
+		<label for="id_username">Username:</label>
+		<input id="id_username" maxlength="254" name="username" type="text" >
+		</p>
+
+		<p>
+		<label for="id_password">Password:</label>
+		<input id="id_password" name="password" type="password">
+		</p>
+
+		<p>
+		<label for="id_email">E-mail:</label>
+		<input id="id_email" name="email" type="email">
+		</p>
+
+		<input class="btn" type="submit" value="login" />
+		<input type="hidden" name="next" value="{{ next }}" />	
+	
+</form>
+
+{% endblock %}

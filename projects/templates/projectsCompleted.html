@@ -1,0 +1,26 @@
+{% extends "base.html" %}	
+
+	{% block nav %}
+          <li class="span4"><a href="{%url 'projects:projectsInProgress'%}" class="brand">Projects in progress</a></li>
+          <li class="active span4"><a href="{%url 'projects:projectsCompleted'%}" class="brand">   Projects    completed</a></li>
+	{% endblock %}	
+
+	{% block content %}
+		<div class="row-fluid span12">
+			<table class="table table-bordered table-striped table-hover">
+				<tr >
+					<th class="span5">Name</th>
+					<th class="span5">Start Date</th>
+					<th class="span5">Completed</th>
+				</tr>
+			{% for project in project_list %}
+				<tr>			
+					<td class="span5"><a href="{% url 'projects:tasks' project.id %}">{{project.name}}</a></td>
+					<td class="span5">{{project.start_date}}</td>
+					<td>{{project.end_date}}</td>
+					<td class="span5">{{project.completed}}</td>			
+				</tr>
+			{% endfor %}
+			</table>
+		</div>
+	{% endblock %}	

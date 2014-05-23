@@ -1,0 +1,48 @@
+{% extends "base.html" %}	
+
+	{% block nav %}
+          <li class="active span4"><a href="{%url 'projects:projectsInProgress'%}" class="brand">Projects in progress</a></li>
+          <li class="span4"><a href="{%url 'projects:projectsCompleted'%}" class="brand">Projects completed</a></li>
+	{% endblock %}	
+			
+	{% block content %}
+		<div class="row-fluid span12">
+			<table class="table table-bordered table-striped table-hover span8">
+				<tr >
+					<th class="span5">Name</th>
+					<th class="span5">Start Date</th>
+					<th class="span5">Completed</th>
+				</tr>
+			{% for project in project_list %}
+				<tr>			
+					<td class="span5"><a href="{% url 'projects:tasks' project.id %}">{{project.name}}</a></td>
+					<td class="span5">{{project.start_date}}</td>
+					<td class="span5">{{project.completed}}</td>			
+				</tr>
+			{% endfor %}
+			</table>
+			</br>
+			</br>
+			{% if perms.projects.addproject %}
+			{% for project in project_list %}
+					<form action="{% url 'projects:projectCompleted' project.id %}" >	
+					{% csrf_token %}
+							<button type="submit" class="btn span3" id="{{project.id}}">completed</button>
+					</form>
+			{% endfor %}
+			{% else %}
+    	   	<p>You don't have permissions to completed projects in the application.</p>
+    	{% endif %}
+		</div>
+
+		
+		<form action="{%url 'projects:addProject' %}" class="span6" method="post">
+		{% csrf_token %}
+			<legend>Add Project</legend>
+			<div class="input-append">
+				<label for="add">Name</label><input for="add"  type="text" name="addproject" required="required">
+				<input type="submit" class="btn" value="Add">  
+			</div>	
+		</form>
+		
+	{% endblock %}
